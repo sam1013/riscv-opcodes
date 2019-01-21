@@ -19,6 +19,7 @@
 #define MSTATUS_MPRV        0x00020000
 #define MSTATUS_SUM         0x00040000
 #define MSTATUS_MXR         0x00080000
+#define MSTATUS_VM          0x1F000000
 #define MSTATUS_TVM         0x00100000
 #define MSTATUS_TW          0x00200000
 #define MSTATUS_TSR         0x00400000
@@ -26,6 +27,11 @@
 #define MSTATUS_UXL         0x0000000300000000
 #define MSTATUS_SXL         0x0000000C00000000
 #define MSTATUS64_SD        0x8000000000000000
+
+#define TSTATUS_EN          0x00000001
+#define TSTATUS_MO          0x00000002 /* mode (1...secure, 0...insecure), read-only */
+#define TSTATUS_UE          0x00010000 /* user enable, marks ttcb as runnable */
+#define TSTATUS_UI          0x00020000 /* ut interrupted bit, prevents enclave from running. This bit is set by hardware or software and cleared by software */
 
 #define SSTATUS_UIE         0x00000001
 #define SSTATUS_SIE         0x00000002
@@ -112,6 +118,13 @@
 #define PRV_S 1
 #define PRV_H 2
 #define PRV_M 3
+
+#define VM_MBARE 0
+#define VM_MBB   1
+#define VM_MBBID 2
+#define VM_SV32  8
+#define VM_SV39  9
+#define VM_SV48  10
 
 #define SATP32_MODE 0x80000000
 #define SATP32_ASID 0x7FC00000

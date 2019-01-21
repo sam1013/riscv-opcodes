@@ -22,10 +22,15 @@ arglut['rm'] = (14,12)
 arglut['imm20'] = (31,12)
 arglut['jimm20'] = (31,12)
 arglut['imm12'] = (31,20)
+arglut['imm10'] = (29,20)
+arglut['etag'] = (31,30)
+arglut['ntag'] = (29,28)
 arglut['imm12hi'] = (31,25)
 arglut['bimm12hi'] = (31,25)
 arglut['imm12lo'] = (11,7)
 arglut['bimm12lo'] = (11,7)
+arglut['imm8hi'] = (27,25)
+arglut['imm8lo'] = (11,7)
 arglut['zimm'] = (19,15)
 arglut['shamt'] = (25,20)
 arglut['shamtw'] = (24,20)
@@ -44,6 +49,7 @@ causes = [
   (0x09, 'supervisor_ecall'),
   (0x0A, 'hypervisor_ecall'),
   (0x0B, 'machine_ecall'),
+  (0x0E, 'tag_mismatch'),
   (0x0C, 'fetch page fault'),
   (0x0D, 'load page fault'),
   (0x0F, 'store page fault'),
@@ -54,6 +60,7 @@ csrs = [
   (0x001, 'fflags'),
   (0x002, 'frm'),
   (0x003, 'fcsr'),
+  (0x004, 'trace'),
 
   # Standard User RO
   (0xC00, 'cycle'),
@@ -100,6 +107,34 @@ csrs = [
   (0x143, 'stval'),
   (0x144, 'sip'),
   (0x180, 'satp'),
+  (0x5c0, 'spmpbase0'),
+  (0x5c1, 'spmpbound0'),
+  (0x5c2, 'spmpflags0'),
+  (0x5c4, 'spmpbase1'),
+  (0x5c5, 'spmpbound1'),
+  (0x5c6, 'spmpflags1'),
+  (0x5c8, 'spmpbase2'),
+  (0x5c9, 'spmpbound2'),
+  (0x5ca, 'spmpflags2'),
+  (0x5cc, 'spmpbase3'),
+  (0x5cd, 'spmpbound3'),
+  (0x5ce, 'spmpflags3'),
+  (0x5d0, 'spmpbase4'),
+  (0x5d1, 'spmpbound4'),
+  (0x5d2, 'spmpflags4'),
+  (0x5d4, 'spmpbase5'),
+  (0x5d5, 'spmpbound5'),
+  (0x5d6, 'spmpflags5'),
+  (0x5d8, 'spmpbase6'),
+  (0x5d9, 'spmpbound6'),
+  (0x5da, 'spmpflags6'),
+  (0x5dc, 'spmpbase7'),
+  (0x5dd, 'spmpbound7'),
+  (0x5de, 'spmpflags7'),
+  (0x5f0, 'ststatus'),
+  (0x5f1, 'sttcb'),
+  (0x5f2, 'sttvec'),
+  (0x5f3, 'stscratch'),
 
   # Standard Machine R/W
   (0x300, 'mstatus'),
@@ -201,6 +236,32 @@ csrs = [
   (0x33D, 'mhpmevent29'),
   (0x33E, 'mhpmevent30'),
   (0x33F, 'mhpmevent31'),
+  (0x7c0, 'mpmpbase0'),
+  (0x7c1, 'mpmpbound0'),
+  (0x7c2, 'mpmpflags0'),
+  (0x7c4, 'mpmpbase1'),
+  (0x7c5, 'mpmpbound1'),
+  (0x7c6, 'mpmpflags1'),
+  (0x7c8, 'mpmpbase2'),
+  (0x7c9, 'mpmpbound2'),
+  (0x7ca, 'mpmpflags2'),
+  (0x7cc, 'mpmpbase3'),
+  (0x7cd, 'mpmpbound3'),
+  (0x7ce, 'mpmpflags3'),
+  (0x7d0, 'mpmpbase4'),
+  (0x7d1, 'mpmpbound4'),
+  (0x7d2, 'mpmpflags4'),
+  (0x7d4, 'mpmpbase5'),
+  (0x7d5, 'mpmpbound5'),
+  (0x7d6, 'mpmpflags5'),
+  (0x7d8, 'mpmpbase6'),
+  (0x7d9, 'mpmpbound6'),
+  (0x7da, 'mpmpflags6'),
+  (0x7dc, 'mpmpbase7'),
+  (0x7dd, 'mpmpbound7'),
+  (0x7de, 'mpmpflags7'),
+  (0x7f0, 'mtstatus'),
+  (0x7f1, 'mttcb'),
 
   # Standard Machine RO
   (0xF11, 'mvendorid'),
@@ -714,8 +775,12 @@ def print_inst(n):
     print_csr_type(n, match[n], arguments[n])
   elif 'imm12' in arguments[n] or n == 'ecall' or n == 'ebreak':
     print_i_type(n, match[n], arguments[n])
+  elif 'imm10' in arguments[n]:
+    print_it_type(n, match[n], arguments[n]) # todo: implement
   elif 'imm12hi' in arguments[n]:
     print_s_type(n, match[n], arguments[n])
+  elif 'imm8hi' in arguments[n]:
+    print_st_type(n, match[n], arguments[n]) # todo: implement
   elif 'bimm12hi' in arguments[n]:
     print_sb_type(n, match[n], arguments[n])
   elif 'rs3' in arguments[n]:

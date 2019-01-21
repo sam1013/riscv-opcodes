@@ -5,7 +5,7 @@
 # hi..lo=value or bit=value or arg=value (e.g. 6..2=0x45 10=1 rd=0)
 #
 # <args> is one of rd, rs1, rs2, rs3, imm20, imm12, imm12lo, imm12hi,
-# shamtw, shamt, rm
+# shamtw, shamt, rm, imm10, imm8hi, imm8lo, etag, ntag
 
 beq     bimm12hi rs1 rs2 bimm12lo 14..12=0 6..2=0x18 1..0=3
 bne     bimm12hi rs1 rs2 bimm12lo 14..12=1 6..2=0x18 1..0=3
@@ -15,7 +15,6 @@ bltu    bimm12hi rs1 rs2 bimm12lo 14..12=6 6..2=0x18 1..0=3
 bgeu    bimm12hi rs1 rs2 bimm12lo 14..12=7 6..2=0x18 1..0=3
 
 jalr    rd rs1 imm12              14..12=0 6..2=0x19 1..0=3
-
 jal     rd jimm20                          6..2=0x1b 1..0=3
 
 lui     rd imm20 6..2=0x0D 1..0=3
@@ -68,6 +67,9 @@ sd     imm12hi rs1 rs2 imm12lo 14..12=3 6..2=0x08 1..0=3
 
 fence       31..28=ignore pred succ     19..15=ignore 14..12=0 11..7=ignore 6..2=0x03 1..0=3
 fence.i     31..28=ignore 27..20=ignore 19..15=ignore 14..12=1 11..7=ignore 6..2=0x03 1..0=3
+
+ltag    rd rs1       imm12 14..12=0 6..2=0x15 1..0=3
+stag   imm12hi rs1 rs2 imm12lo 14..12=1 6..2=0x15 1..0=3
 
 # RV32M
 mul     rd rs1 rs2 31..25=1 14..12=0 6..2=0x0C 1..0=3
