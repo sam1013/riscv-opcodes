@@ -4,7 +4,7 @@ ISASIM_H := ../riscv-isa-sim/riscv/encoding.h
 PK_H := ../riscv-pk/machine/encoding.h
 FESVR_H := ../riscv-fesvr/fesvr/encoding.h
 ENV_H := ../riscv-tests/env/encoding.h
-TAGTEST_H := ../riscv-tag-tests/machine/encoding.h
+TAGTEST_H := ../timberv-tag-tests/machine/encoding.h
 GAS_H := ../riscv-gnu-toolchain/riscv-binutils-gdb/include/opcode/riscv-opc.h
 OPENOCD_H := ../riscv-openocd/src/target/riscv/encoding.h
 
@@ -12,7 +12,7 @@ ALL_OPCODES := opcodes-pseudo opcodes opcodes-rvc opcodes-rvc-pseudo opcodes-cus
 
 install: $(ISASIM_H) $(PK_H) $(FESVR_H) $(ENV_H) $(TAGTEST_H) $(GAS_H) $(OPENOCD_H) inst.chisel instr-table.tex priv-instr-table.tex
 
-$(ISASIM_H) $(PK_H) $(FESVR_H) $(ENV_H) $(TAGTEST_H) $(RUNTIME_H) $(OPENOCD_H): $(ALL_OPCODES) parse-opcodes encoding.h
+$(ISASIM_H) $(PK_H) $(FESVR_H) $(ENV_H) $(TAGTEST_H) $(OPENOCD_H): $(ALL_OPCODES) parse-opcodes encoding.h
 	-cp encoding.h $@ && \
 	cat opcodes opcodes-rvc-pseudo opcodes-rvc opcodes-custom | ./parse-opcodes -c >> $@
 
